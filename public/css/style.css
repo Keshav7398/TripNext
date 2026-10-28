@@ -1,0 +1,153 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    display:flex;
+    flex-direction: column;
+    min-width: 100vh;
+    font-family: "Plus Jakarta Sans", sans-serif !important;
+}
+.container{
+    flex:1;
+
+}
+
+/* Navbar */
+.fa-compass{
+    color: red;
+    height: 10px;
+    width:10px;
+    
+}
+
+.navbar{
+    height: 5rem;
+    font-size: 2rem;
+    background: white;
+}
+
+.nav-link{
+    color: black !important;   /* fixed typo */
+}
+
+/* Footer */
+.f-info-links a{
+    text-decoration: none;
+    color: black;
+}
+
+.f-info-links a:hover{
+     text-decoration: underline;
+}
+
+.f-info-links .f-info-socials, .titel{
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.f-info{
+    text-align: center;
+    height: 8rem;
+    background-color: gainsboro;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: space-evenly;
+}
+
+/* Cards */
+.card{
+    border: none;
+    margin-top: 2rem;
+    position: relative;
+    overflow: hidden; /* for image zoom effect */
+}
+
+.card-img-top{
+    border-radius: 1rem !important;
+    width: 100% !important;
+    height: 20rem;
+    object-fit: cover !important;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Zoom image on hover */
+.card:hover .card-img-top{
+    transform: scale(1.05);
+}
+
+.card-body{
+    padding: 0 !important;
+}
+
+.card-text p{
+    font-weight: 400;
+}
+
+/* Link wrapper */
+.listing-links{
+    text-decoration: none; /* fixed invalid property */
+    color: inherit;
+}
+
+/* Overlay */
+.card-img-overlay{
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    border-radius: 1rem;
+}
+
+/* Dark overlay effect */
+.card:hover .card-img-overlay{
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.4);
+}
+.btn{
+    background-color: red !important;
+    border:none;
+}
+.show-img{
+    height: 30vh;
+
+}
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    flex: 1; /* pushes footer to bottom */
+}
+
+footer {
+    background: gainsboro;
+    padding: 1rem;
+    text-align: center;
+}
+.navbar-brand {
+  font-size: 1.3rem;
+}
+
+.nav-link {
+  font-size: 1rem;
+}
+
+.nav-link:hover {
+  color: #ff385c !important;
+}
+
+.btn {
+  border-radius: 25px;
+  padding: 6px 16px;
+}
+html {
+  font-size: 16px;
+}

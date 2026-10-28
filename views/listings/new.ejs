@@ -1,0 +1,198 @@
+<%- layout('layouts/boilerplate') %>
+
+<style>
+  .page-wrap {
+    padding-top: 120px; /* because your navbar is fixed */
+    padding-bottom: 40px;
+  }
+
+  .form-shell {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+
+  .form-card {
+    background: #fff;
+    border: 1px solid #ebebeb;
+    border-radius: 16px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    overflow: hidden;
+  }
+
+  .form-card-header {
+    padding: 22px 24px;
+    border-bottom: 1px solid #ebebeb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .form-card-header h1 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    color: #222;
+  }
+
+  .form-card-body {
+    padding: 24px;
+  }
+
+  .hint {
+    color: #717171;
+    font-size: 14px;
+    margin: 0;
+  }
+
+  /* Inputs */
+  .form-label {
+    font-weight: 600;
+    font-size: 14px;
+    color: #222;
+  }
+
+  .form-control {
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+
+  .form-control:focus {
+    box-shadow: none;
+    border-color: #222;
+  }
+
+  textarea.form-control {
+    min-height: 120px;
+    resize: vertical;
+  }
+
+  /* File input spacing */
+  input[type="file"].form-control {
+    padding: 10px 12px;
+  }
+
+  /* Actions */
+  .actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    padding-top: 8px;
+  }
+
+  .btn-primary-new {
+    background: #FF385C;
+    color: #fff;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 12px;
+    font-weight: 700;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .btn-primary-new:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(255,56,92,0.28);
+    color: #fff;
+  }
+
+  .btn-ghost {
+    background: #fff;
+    color: #222;
+    border: 1px solid #ddd;
+    padding: 12px 18px;
+    border-radius: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .btn-ghost:hover {
+    background: #f7f7f7;
+    color: #222;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .form-card-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+</style>
+
+<div class="page-wrap">
+  <div class="form-shell">
+    <div class="form-card">
+      <div class="form-card-header">
+        <div>
+          <h1>Create New Listing</h1>
+          <p class="hint">Add details to publish your stay.</p>
+        </div>
+        <a href="/listings" class="btn-ghost">← Back</a>
+      </div>
+
+      <div class="form-card-body">
+        <form 
+          method="POST" 
+          action="/listings" 
+          enctype="multipart/form-data"
+          class="needs-validation"
+          novalidate
+        >
+          <div class="mb-3">
+            <label class="form-label">Title</label>
+            <input class="form-control" type="text" name="listing[title]" required>
+            <div class="invalid-feedback">Please enter a title.</div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea class="form-control" name="listing[description]" required></textarea>
+            <div class="invalid-feedback">Please enter a description.</div>
+          </div>
+
+          <div class="row">
+            <div class="mb-3 col-md-6">
+              <label class="form-label">Price</label>
+              <input class="form-control" type="number" name="listing[price]" required>
+              <div class="invalid-feedback">Please enter a price.</div>
+            </div>
+
+            <div class="mb-3 col-md-6">
+              <label class="form-label">Country</label>
+              <input class="form-control" type="text" name="listing[country]" required>
+              <div class="invalid-feedback">Please enter a country.</div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Location</label>
+            <input class="form-control" type="text" name="listing[location]" required>
+            <div class="invalid-feedback">Please enter a location.</div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Image</label>
+            <input class="form-control" type="file" name="listing[image]" required>
+            <div class="invalid-feedback">Please upload an image.</div>
+          </div>
+
+          <div class="actions">
+            <button class="btn-primary-new" type="submit">Add Listing</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

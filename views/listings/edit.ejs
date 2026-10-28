@@ -1,0 +1,255 @@
+<%- layout('layouts/boilerplate') %>
+
+<style>
+  .edit-wrap{
+    min-height: calc(100vh - 160px);
+    padding: 120px 16px 60px; /* for fixed navbar */
+    display: flex;
+    justify-content: center;
+  }
+
+  .edit-card{
+    width: 100%;
+    max-width: 920px;
+    border: 1px solid #ebebeb;
+    border-radius: 18px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.10);
+  }
+
+  .edit-header{
+    padding: 22px 22px 16px;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .edit-title{
+    margin: 0;
+    font-size: 22px;
+    font-weight: 900;
+    color: #222;
+  }
+
+  .edit-subtitle{
+    margin: 6px 0 0;
+    font-size: 14px;
+    color: #717171;
+  }
+
+  .back-link{
+    text-decoration: none;
+    font-weight: 800;
+    color: #222;
+    border: 1px solid #ddd;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: #fff;
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+  .back-link:hover{ background:#f7f7f7; color:#222; }
+
+  .edit-body{
+    padding: 18px 22px 22px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+  }
+
+  .preview{
+    border: 1px solid #eee;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #fafafa;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .preview img{
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    background: #f2f2f2;
+  }
+
+  .preview-meta{
+    padding: 14px 14px 16px;
+  }
+
+  .preview-meta h4{
+    margin: 0 0 6px;
+    font-size: 16px;
+    font-weight: 900;
+    color: #222;
+    line-height: 1.3;
+  }
+
+  .preview-meta p{
+    margin: 0;
+    font-size: 13px;
+    color: #717171;
+    line-height: 1.6;
+  }
+
+  .field{
+    margin-bottom: 12px;
+  }
+
+  .form-label{
+    font-weight: 800;
+    font-size: 13px;
+    color: #222;
+  }
+
+  .form-control{
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+
+  .form-control:focus{
+    border-color: #222;
+    box-shadow: none;
+  }
+
+  textarea.form-control{
+    min-height: 120px;
+    resize: vertical;
+  }
+
+  .btn-save{
+    width: 100%;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-weight: 900;
+    background: linear-gradient(to right, #E61E4D 0%, #E31C5F 50%, #D70466 100%);
+    color: #fff;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .btn-save:hover{
+    transform: translateY(-1px);
+    box-shadow: 0 12px 24px rgba(215,4,102,0.22);
+    color: #fff;
+  }
+
+  .hint{
+    font-size: 12px;
+    color: #9a9a9a;
+    margin-top: 6px;
+  }
+
+  @media (max-width: 900px){
+    .edit-body{ grid-template-columns: 1fr; }
+    .preview img{ height: 260px; }
+  }
+</style>
+
+<div class="edit-wrap">
+  <div class="edit-card">
+
+    <div class="edit-header">
+      <div>
+        <h1 class="edit-title">Edit your listing</h1>
+        <p class="edit-subtitle">Update details and replace the image if you want.</p>
+      </div>
+      <a class="back-link" href="/listings/<%= listing._id %>">← Back</a>
+    </div>
+
+    <div class="edit-body">
+
+      <!-- LEFT: Form -->
+      <div>
+        <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" enctype="multipart/form-data">
+
+          <div class="field">
+            <label class="form-label">Title</label>
+            <input
+              type="text"
+              name="listing[title]"
+              class="form-control"
+              value="<%= listing.title %>"
+              required
+            >
+          </div>
+
+          <div class="field">
+            <label class="form-label">Description</label>
+            <textarea
+              name="listing[description]"
+              class="form-control"
+              required
+            ><%= listing.description %></textarea>
+          </div>
+
+          <div class="field">
+            <label class="form-label">Price (per night)</label>
+            <input
+              type="number"
+              name="listing[price]"
+              class="form-control"
+              value="<%= listing.price %>"
+              min="0"
+              required
+            >
+          </div>
+
+          <div class="field">
+            <label class="form-label">Country</label>
+            <input
+              type="text"
+              name="listing[country]"
+              class="form-control"
+              value="<%= listing.country %>"
+              required
+            >
+          </div>
+
+          <div class="field">
+            <label class="form-label">Location</label>
+            <input
+              type="text"
+              name="listing[location]"
+              class="form-control"
+              value="<%= listing.location %>"
+              required
+            >
+          </div>
+
+          <div class="field">
+            <label class="form-label">Replace image</label>
+            <input
+              type="file"
+              name="listing[image]"
+              class="form-control"
+              accept="image/*"
+            >
+            <div class="hint">Leave empty to keep the current image.</div>
+          </div>
+
+          <button type="submit" class="btn-save mt-2">Update Listing</button>
+
+        </form>
+      </div>
+
+      <!-- RIGHT: Preview -->
+      <div class="preview">
+        <img src="<%= listing.image?.url || '/images/default.jpg' %>" alt="<%= listing.title %>">
+        <div class="preview-meta">
+          <h4><%= listing.title %></h4>
+          <p>
+            ₹ <%= (listing.price || 0).toLocaleString("en-IN") %> / night <br>
+            <%= listing.location %><% if (listing.country) { %>, <%= listing.country %><% } %>
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

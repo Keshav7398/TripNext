@@ -1,0 +1,314 @@
+<!-- views/layouts/boilerplate.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= typeof title !== 'undefined' ? title : 'Wanderlust - Vacation Rentals' %></title>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #222;
+      line-height: 1.6;
+    }
+
+    /* Navigation */
+    nav.main-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      border-bottom: 1px solid #ebebeb;
+      padding: 20px 80px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 700;
+      color: #FF385C;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo:hover { color: #FF385C; }
+
+    .logo svg {
+      width: 32px;
+      height: 32px;
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      border: 1px solid #ddd;
+      border-radius: 40px;
+      padding: 8px 16px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+      transition: box-shadow 0.2s;
+      cursor: pointer;
+    }
+
+    .search-bar:hover {
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    }
+
+    .search-item {
+      padding: 0 16px;
+      border-right: 1px solid #ddd;
+    }
+
+    .search-item:last-child {
+      border-right: none;
+      padding-right: 8px;
+    }
+
+    .search-item strong {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .search-item span {
+      font-size: 14px;
+      color: #717171;
+    }
+
+    .search-btn {
+      background: #FF385C;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .nav-link {
+      color: #222;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 14px;
+      padding: 8px 12px;
+      border-radius: 20px;
+      transition: background 0.2s;
+    }
+
+    .nav-link:hover {
+      background: #f7f7f7;
+      color: #222;
+    }
+
+    .user-menu {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid #ddd;
+      border-radius: 24px;
+      padding: 6px 8px 6px 12px;
+      cursor: pointer;
+      transition: box-shadow 0.2s;
+      text-decoration: none;
+      color: #222;
+    }
+
+    .user-menu:hover {
+      box-shadow: 0 2px 4px rgba(0,0,0,0.12);
+    }
+
+    /* Flash Messages */
+    .alert {
+      margin-top: 95px; /* ✅ more space because nav is fixed */
+      border-radius: 8px;
+    }
+
+    /* Footer */
+    footer {
+      background: #f7f7f7;
+      border-top: 1px solid #ebebeb;
+      padding: 48px 80px;
+      margin-top: 60px;
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    .footer-column h4 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .footer-column a {
+      display: block;
+      color: #222;
+      text-decoration: none;
+      font-size: 14px;
+      margin-bottom: 12px;
+      transition: text-decoration 0.2s;
+    }
+
+    .footer-column a:hover {
+      text-decoration: underline;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #ebebeb;
+      margin-top: 40px;
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      color: #717171;
+    }
+
+    @media (max-width: 768px) {
+      nav.main-nav { padding: 16px 24px; }
+      .search-bar { display: none; }
+      footer { padding: 32px 24px; }
+      .footer-content { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <%
+    
+    const user = (typeof currUser !== 'undefined' && currUser) ? currUser
+              : (typeof currentUser !== 'undefined' ? currentUser : null);
+  %>
+
+  <!-- Navigation -->
+  <nav class="main-nav">
+    <a href="/" class="logo">
+      <svg viewBox="0 0 32 32" fill="currentColor">
+        <path d="M16 1c2 0 3.46.96 4.75 3.27L23.16 9h2.43A5.41 5.41 0 0 1 31 14.41v.24c0 1.4-.56 2.73-1.56 3.7l-.18.16L28.63 19 26 21.49a5.39 5.39 0 0 1-6.88.67l-.47-.4-2.65-2.5-2.65 2.5c-1.8 1.7-4.67 1.75-6.53.1l-.35-.32L4.18 19l-.63-.53-.18-.16A5.27 5.27 0 0 1 1 14.65v-.24A5.41 5.41 0 0 1 6.41 9h2.43l2.41-4.73C12.54 1.96 14 1 16 1zm0 2c-1.18 0-2.06.48-3.11 2.42L10.25 10h11.5l-2.64-4.58C18.06 3.48 17.18 3 16 3zm7.59 8H6.41A3.41 3.41 0 0 0 3 14.41v.24c0 .85.33 1.67.93 2.27l.15.14.7.58L7.3 19.8a3.39 3.39 0 0 0 4.1.46l.3-.22L15.5 16l3.8 4.04c1.24 1.21 3.2 1.26 4.5.15l.27-.24 2.52-2.16.7-.58.15-.14A3.27 3.27 0 0 0 29 14.65v-.24A3.41 3.41 0 0 0 25.59 11z"/>
+      </svg>
+      wanderlust
+    </a>
+
+    <div class="search-bar" onclick="window.location.href='/listings'">
+      <div class="search-item"><strong>Anywhere</strong></div>
+      <div class="search-item"><strong>Any week</strong></div>
+      <div class="search-item"><span>Add guests</span></div>
+      <button class="search-btn" type="button">
+        <i class="fas fa-search"></i>
+      </button>
+    </div>
+
+    <div class="nav-right">
+      <% if (user) { %>
+           <a href="/listings/new" class="nav-link">Become a Host</a>
+
+        <div class="user-menu" onclick="document.getElementById('logoutForm').submit()">
+          <i class="fas fa-bars"></i>
+          <i class="fas fa-user-circle" style="font-size: 28px; color: #717171;"></i>
+        </div>
+
+        <form id="logoutForm" action="/logout" method="POST" style="display: none;">
+          <button type="submit">Logout</button>
+        </form>
+      <% } else { %>
+         <a href="/listings/new" class="nav-link">Become a Host</a>
+        <a href="/login" class="nav-link">Log in</a>
+        <a href="/signup" class="nav-link" style="background: #FF385C; color: white;">Sign up</a>
+      <% } %>
+    </div>
+  </nav>
+
+  <!-- Flash Messages -->
+  <% if (typeof success !== 'undefined' && success && success.length) { %>
+    <div class="container">
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <%= Array.isArray(success) ? success.join(', ') : success %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    </div>
+  <% } %>
+
+  <% if (typeof error !== 'undefined' && error && error.length) { %>
+    <div class="container">
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <%= Array.isArray(error) ? error.join(', ') : error %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    </div>
+  <% } %>
+
+  <!-- Main Content -->
+  <%- body %>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-column">
+        <h4>Support</h4>
+        <a href="#">Help Center</a>
+        <a href="#">Safety information</a>
+        <a href="#">Cancellation options</a>
+        <a href="#">Our COVID-19 Response</a>
+        <a href="#">Supporting people with disabilities</a>
+      </div>
+
+      <div class="footer-column">
+        <h4>Community</h4>
+        <a href="#">Wanderlust.org: disaster relief housing</a>
+        <a href="#">Support Afghan refugees</a>
+        <a href="#">Combating discrimination</a>
+      </div>
+
+      <div class="footer-column">
+        <h4>Hosting</h4>
+        <a href="/listings/new">Try hosting</a>
+        <a href="#">Explore hosting resources</a>
+        <a href="#">Visit our community forum</a>
+        <a href="#">How to host responsibly</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>© 2024 Wanderlust, Inc. · Privacy · Terms · Sitemap</div>
+      <div>🌐 English (US) · ₹ INR</div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

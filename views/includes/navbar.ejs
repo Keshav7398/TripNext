@@ -1,0 +1,115 @@
+<style>
+/* Explore text styling */
+.explore-link {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #222;
+}
+
+/* Search bar container */
+.search-bar {
+  max-width: 420px;
+  width: 100%;
+}
+
+/* Input */
+.search-input {
+  border-radius: 50px 0 0 50px;
+  padding: 0.55rem 1rem;
+  font-size: 0.9rem;
+  border: 1px solid #ddd;
+}
+
+/* Button */
+.search-btn {
+  border-radius: 0 50px 50px 0;
+  background: #ff385c;
+  color: white;
+  padding: 0 1rem;
+  border: none;
+}
+
+.search-btn:hover {
+  background: #e0314d;
+}
+
+.search-input:focus {
+  box-shadow: none;
+  border-color: #ddd;
+}
+</style>
+
+<nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top">
+  <div class="container-fluid">
+
+    <!-- LOGO -->
+    <a class="navbar-brand fw-bold" href="/">
+      <i class="fa-solid fa-compass"></i>
+    </a>
+
+    <!-- TOGGLER -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+
+      <!-- LEFT LINKS -->
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link explore-link" href="/listings">Explore</a>
+        </li>
+      </ul>
+
+      <!-- CENTER SEARCH -->
+      <form class="d-flex mx-auto search-bar">
+        <input
+          class="form-control search-input"
+          type="search"
+          placeholder="Search destinations"
+          name="q"
+        >
+        <button class="btn search-btn" type="submit">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+      </form>
+
+      <!-- RIGHT SIDE -->
+      <ul class="navbar-nav ms-auto align-items-center gap-3">
+
+        <% if (!currUser) { %>
+          <a class="nav-link explore-link fw-semibold" href="/listings/new">
+  Become a host
+</a>
+
+          <li class="nav-item">
+            <a class="nav-link explore-link" href="/login">Login</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link explore-link" href="/signup">Sign up</a>
+          </li>
+
+        <% } else { %>
+
+          <!-- BECOME A HOST -->
+          <a class="nav-link explore-link fw-semibold" href="/listings/new">
+  Become a host
+</a>
+
+          <!-- LOGOUT -->
+          <li class="nav-item">
+            <form action="/logout" method="POST">
+              <button class="nav-link btn btn-link p-0 explore-link" type="submit">
+                Logout
+              </button>
+            </form>
+          </li>
+
+        <% } %>
+
+      </ul>
+
+    </div>
+  </div>
+</nav>

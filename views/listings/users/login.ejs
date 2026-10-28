@@ -1,0 +1,258 @@
+<%- layout("layouts/boilerplate") %>
+
+<style>
+  /* Page spacing (your navbar is fixed) */
+  .auth-wrap {
+    min-height: calc(100vh - 140px);
+    padding: 120px 16px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .auth-card {
+    width: 100%;
+    max-width: 460px;
+    border: 1px solid #ebebeb;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    overflow: hidden;
+    background: #fff;
+  }
+
+  .auth-header {
+    padding: 22px 22px 14px;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .auth-logo {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    background: rgba(255,56,92,0.12);
+    color: #FF385C;
+    font-size: 18px;
+  }
+
+  .auth-title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 800;
+    color: #222;
+  }
+
+  .auth-subtitle {
+    margin: 2px 0 0;
+    font-size: 14px;
+    color: #717171;
+  }
+
+  .auth-body {
+    padding: 18px 22px 22px;
+  }
+
+  .form-label {
+    font-weight: 700;
+    font-size: 13px;
+    color: #222;
+  }
+
+  .form-control {
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+
+  .form-control:focus {
+    border-color: #222;
+    box-shadow: none;
+  }
+
+  .input-with-icon {
+    position: relative;
+  }
+
+  .input-with-icon i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #717171;
+    font-size: 14px;
+  }
+
+  .input-with-icon input {
+    padding-left: 38px;
+  }
+
+  .password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    color: #717171;
+    padding: 6px 8px;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
+  .password-toggle:hover {
+    background: #f7f7f7;
+    color: #222;
+  }
+
+  .btn-auth {
+    width: 100%;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-weight: 800;
+    background: linear-gradient(to right, #E61E4D 0%, #E31C5F 50%, #D70466 100%);
+    color: #fff;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .btn-auth:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 22px rgba(215,4,102,0.22);
+    color: #fff;
+  }
+
+  .auth-footer {
+    margin-top: 14px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 14px;
+    color: #717171;
+  }
+
+  .auth-footer a {
+    color: #222;
+    text-decoration: none;
+    font-weight: 700;
+  }
+
+  .auth-footer a:hover {
+    text-decoration: underline;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 16px 0;
+    color: #b0b0b0;
+    font-size: 12px;
+  }
+
+  .divider::before,
+  .divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #eee;
+  }
+
+  .note {
+    font-size: 12px;
+    color: #9a9a9a;
+    margin: 0;
+    text-align: center;
+  }
+</style>
+
+<div class="auth-wrap">
+  <div class="auth-card">
+
+    <div class="auth-header">
+      <div class="auth-logo">
+        <i class="fa-solid fa-compass"></i>
+      </div>
+      <div>
+        <h3 class="auth-title">Welcome back</h3>
+        <p class="auth-subtitle">Login to continue to Wanderlust</p>
+      </div>
+    </div>
+
+    <div class="auth-body">
+      <form action="/login" method="POST" class="needs-validation" novalidate>
+
+        <!-- USERNAME -->
+        <div class="mb-3">
+          <label class="form-label" for="username">Username</label>
+          <div class="input-with-icon">
+            <i class="fa-regular fa-user"></i>
+            <input
+              type="text"
+              class="form-control"
+              id="username"
+              name="username"
+              placeholder="Enter your username"
+              required
+            />
+          </div>
+          <div class="invalid-feedback">Username is required</div>
+        </div>
+
+        <!-- PASSWORD -->
+        <div class="mb-2">
+          <label class="form-label" for="password">Password</label>
+          <div class="input-with-icon">
+            <i class="fa-solid fa-lock"></i>
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              name="password"
+              placeholder="Enter your password"
+              required
+            />
+            <button class="password-toggle" type="button" id="togglePassword" aria-label="Toggle password">
+              <i class="fa-regular fa-eye"></i>
+            </button>
+          </div>
+          <div class="invalid-feedback">Password is required</div>
+        </div>
+
+        <div class="auth-footer">
+          <span>New here? <a href="/signup">Create account</a></span>
+          <a href="/listings">Explore</a>
+        </div>
+
+        <div class="divider">secure login</div>
+
+        <!-- SUBMIT -->
+        <button class="btn-auth" type="submit">
+          Login
+        </button>
+
+        <p class="note mt-3">By continuing, you agree to our Terms and Privacy Policy.</p>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Show/Hide password
+  const toggleBtn = document.getElementById("togglePassword");
+  const passInput = document.getElementById("password");
+
+  if (toggleBtn && passInput) {
+    toggleBtn.addEventListener("click", () => {
+      const isHidden = passInput.getAttribute("type") === "password";
+      passInput.setAttribute("type", isHidden ? "text" : "password");
+      toggleBtn.innerHTML = isHidden
+        ? '<i class="fa-regular fa-eye-slash"></i>'
+        : '<i class="fa-regular fa-eye"></i>';
+    });
+  }
+</script>

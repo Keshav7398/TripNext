@@ -1,0 +1,335 @@
+<!-- views/home.ejs -->
+<%- layout('layouts/boilerplate') %>
+
+<%
+  // ✅ Make it compatible with your old backend variable
+  // If you pass featuredListings from backend, it will use that.
+  // Otherwise it will use allListings (your old code variable).
+  const listings = (typeof featuredListings !== 'undefined' && featuredListings && featuredListings.length)
+    ? featuredListings
+    : (typeof allListings !== 'undefined' ? allListings : []);
+%>
+
+<style>
+  /* Hero Section */
+  .hero {
+  margin-top: 90px;              /* space below fixed navbar */
+  height: 420px;                 /* ✅ reduced from 600px */
+  max-width: 1200px;             /* ✅ stop full-width stretching */
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 18px;           /* ✅ nicer look */
+  overflow: hidden;              /* ✅ keep rounded corners clean */
+  background: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)),
+              url('https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1600')
+              center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+}
+
+/* Responsive hero */
+@media (max-width: 768px) {
+  .hero {
+    height: 300px;
+    margin-top: 80px;
+    border-radius: 14px;
+    max-width: 100%;
+    margin-left: 16px;
+    margin-right: 16px;
+  }
+}
+
+  .hero-content h1 {
+    font-size: 56px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+  }
+
+  .hero-content p {
+    font-size: 24px;
+    margin-bottom: 30px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+  }
+
+  .btn-primary {
+    background: #FF385C;
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .btn-primary:hover {
+    transform: scale(1.04);
+    box-shadow: 0 4px 12px rgba(255,56,92,0.4);
+    color: white;
+  }
+
+  /* Categories */
+  .categories {
+    padding: 40px 80px;
+    background: #fff;
+    border-bottom: 1px solid #ebebeb;
+  }
+
+  .category-tabs {
+    display: flex;
+    gap: 32px;
+    overflow-x: auto;
+    padding-bottom: 16px;
+  }
+
+  .category-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+    padding-bottom: 12px;
+    border-bottom: 2px solid transparent;
+    text-decoration: none;
+    color: #222;
+  }
+
+  .category-tab:hover,
+  .category-tab.active {
+    opacity: 1;
+    border-bottom-color: #222;
+  }
+
+  .category-icon { font-size: 24px; }
+
+  .category-tab span {
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  /* Listings Grid */
+  .container {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 40px 80px;
+  }
+
+  .listings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 40px 24px;
+  }
+
+  .listing-card {
+    cursor: pointer;
+    transition: transform 0.2s;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .listing-card:hover { transform: scale(1.02); }
+
+  .listing-image {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 1/1;
+    margin-bottom: 12px;
+  }
+
+  .listing-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .favorite-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(255,255,255,0.9);
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  .favorite-btn:hover { transform: scale(1.1); }
+
+  .guest-favorite {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .listing-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .listing-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+  }
+
+  .listing-location {
+    font-weight: 600;
+    font-size: 15px;
+    color: #222;
+  }
+
+  .listing-distance,
+  .listing-dates {
+    color: #717171;
+    font-size: 15px;
+  }
+
+  .listing-price {
+    font-weight: 600;
+    font-size: 15px;
+    margin-top: 4px;
+  }
+
+  .listing-price span { font-weight: 400; }
+
+  .rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 14px;
+  }
+
+  @media (max-width: 768px) {
+    .hero-content h1 { font-size: 36px; }
+    .container { padding: 24px; }
+    .listings-grid { grid-template-columns: 1fr; gap: 24px; }
+    .categories { padding: 24px; }
+  }
+</style>
+
+<!-- Hero Section -->
+<section class="hero">
+  <div class="hero-content">
+    <h1>Not sure where to go? Perfect.</h1>
+    <p>Find stays for any trip</p>
+    <a href="/listings" class="btn-primary">Explore Wanderlust</a>
+  </div>
+</section>
+
+<!-- Categories -->
+<section class="categories">
+  <div class="category-tabs">
+    <a href="/listings" class="category-tab active">
+      <div class="category-icon">🏖️</div>
+      <span>Amazing views</span>
+    </a>
+    <a href="/listings?search=beach" class="category-tab">
+      <div class="category-icon">🌊</div>
+      <span>Beachfront</span>
+    </a>
+    <a href="/listings?search=cabin" class="category-tab">
+      <div class="category-icon">🏡</div>
+      <span>Cabins</span>
+    </a>
+    <a href="/listings?search=trending" class="category-tab">
+      <div class="category-icon">🔥</div>
+      <span>Trending</span>
+    </a>
+    <a href="/listings?search=countryside" class="category-tab">
+      <div class="category-icon">🌾</div>
+      <span>Countryside</span>
+    </a>
+    <a href="/listings?sort=price_desc" class="category-tab">
+      <div class="category-icon">✨</div>
+      <span>Luxury</span>
+    </a>
+  </div>
+</section>
+
+<!-- Featured Listings -->
+<div class="container">
+  <h2 style="margin-bottom: 32px; font-size: 28px; font-weight: 600;">Featured stays</h2>
+
+  <div class="listings-grid">
+    <% if (listings && listings.length > 0) { %>
+      <% listings.forEach(listing => { %>
+        <a href="/listings/<%= listing._id %>" class="listing-card">
+          <div class="listing-image">
+            <% if (listing.featured) { %>
+              <div class="guest-favorite">Guest favorite</div>
+            <% } %>
+
+            <button class="favorite-btn" onclick="event.preventDefault(); event.stopPropagation();">
+              <i class="far fa-heart"></i>
+            </button>
+
+            <img
+              src="<%= listing.image?.url || '/images/default.jpg' %>"
+              alt="<%= listing.title %>"
+            >
+          </div>
+
+          <div class="listing-info">
+            <div class="listing-header">
+              <span class="listing-location">
+                <%= listing.location %><% if (listing.country) { %>, <%= listing.country %><% } %>
+              </span>
+
+              <% if (listing.reviews && listing.reviews.length > 0) { %>
+                <span class="rating">
+                  ★ <%= (listing.reviews.reduce((sum, r) => sum + (r.rating || 0), 0) / listing.reviews.length).toFixed(2) %>
+                </span>
+              <% } %>
+            </div>
+
+            <span class="listing-distance"><%= listing.propertyType || 'Entire place' %></span>
+            <span class="listing-dates">Available now</span>
+            <span class="listing-price">
+              ₹ <%= (listing.price || 0).toLocaleString("en-IN") %> <span>night</span>
+            </span>
+          </div>
+        </a>
+      <% }) %>
+    <% } else { %>
+      <p style="color:#717171;">No listings available.</p>
+    <% } %>
+  </div>
+
+  <div style="text-align: center; margin-top: 48px;">
+    <a href="/listings" class="btn-primary">View all listings</a>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.favorite-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const icon = btn.querySelector('i');
+      icon.classList.toggle('far');
+      icon.classList.toggle('fas');
+    });
+  });
+</script>

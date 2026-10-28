@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; }
+
+    /* Overlay */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+
+    /* Modal box */
+    .modal {
+      width: 380px;
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      position: relative;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      border: none;
+      background: transparent;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .modal input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .modal button.login-btn {
+      width: 100%;
+      padding: 10px;
+      background: black;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .page {
+      padding: 30px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page">
+    <h1>Home Page</h1>
+    <p>This is your home page content.</p>
+    <button id="openLogin">Login</button>
+  </div>
+
+  <!-- Login Modal -->
+  <div class="modal-overlay" id="loginOverlay">
+    <div class="modal" onclick="event.stopPropagation()">
+      <button class="close-btn" id="closeLogin">✕</button>
+      <h2>Login</h2>
+
+      <input type="text" placeholder="Email" />
+      <input type="password" placeholder="Password" />
+
+      <button class="login-btn">Login</button>
+    </div>
+  </div>
+
+  <script>
+    const openLogin = document.getElementById("openLogin");
+    const closeLogin = document.getElementById("closeLogin");
+    const overlay = document.getElementById("loginOverlay");
+
+    openLogin.addEventListener("click", () => {
+      overlay.style.display = "flex";
+    });
+
+    closeLogin.addEventListener("click", () => {
+      overlay.style.display = "none";
+    });
+
+    // close when clicking outside modal
+    overlay.addEventListener("click", () => {
+      overlay.style.display = "none";
+    });
+  </script>
+
+</body>
+</html>
